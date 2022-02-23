@@ -7,13 +7,9 @@ const operationLogs = (state = [], action) => {
         description: action.description,
         operatedAt: action.operatedAt,
       };
-      console.log(operationLog);
       return [operationLog, ...state];
     case DELETE_ALL_OPERATION_LOG:
-      return [
-        { description: action.description, operatedAt: action.operatedAt },
-        ...state,
-      ];
+      return [];
     default:
       return state;
   }
