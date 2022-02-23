@@ -1,8 +1,11 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import { CREATE_EVENT, DELETE_ALL_EVENTS } from '../actions/index'
 
-const EventFrom = (props) => {
-    const {state, dispatch} = props;
+import AppContext from "../contexts/AppContext";
+
+
+const EventFrom = () => {
+  const { state, dispatch } = useContext(AppContext)
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
   
