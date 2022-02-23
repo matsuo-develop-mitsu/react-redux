@@ -5,9 +5,12 @@ const Event = (props) => {
     const { event, dispatch } = props;
           const id = event.id;
       const handleClickDeleteButton = () => {
-        dispatch({
-          type: 'DELETE_EVENT', id
-        })
+        const result = window.confirm(`イベント(id=${id})を本当に削除してもよろしいですか？`);
+        if (result) {
+            dispatch({
+                type: 'DELETE_EVENT', id
+            })      
+        }
       }
       return (
       <tr>
