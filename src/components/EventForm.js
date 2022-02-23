@@ -1,38 +1,54 @@
-import React, {useState, useContext} from "react";
-import { CREATE_EVENT, DELETE_ALL_EVENTS } from '../actions/index'
+import React, { useState, useContext } from "react";
+import {
+  CREATE_EVENT,
+  DELETE_ALL_EVENTS,
+  ADD_OPERATION_LOG,
+  DELETE_ALL_OPERATION_LOG,
+} from "../actions/index";
 
 import AppContext from "../contexts/AppContext";
-
-
+import { timeCurrentIso8601 } from '../utils'
 const EventFrom = () => {
-  const { state, dispatch } = useContext(AppContext)
-    const [title, setTitle] = useState("");
-    const [body, setBody] = useState("");
-  
-    const addEvent = (e) => {
-      e.preventDefault();
+  const { state, dispatch } = useContext(AppContext);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
+
+  const addEvent = (e) => {
+    e.preventDefault();
+    dispatch({
+      type: CREATE_EVENT,
+      title,
+      body,
+    });
+
+    dispatch({
+      type: ADD_OPERATION_LOG,
+      description: 'イベントを作成しました。',
+      operatedAt: timeCurrentIso8601()
+    })
+
+    setTitle("");
+    setBody("");
+  };
+
+  const deleteAllEvents = (e) => {
+    e.preventDefault();
+    const result = window.confirm(
+      "全てのイベントを本当に削除してもよろしいでしょうか？"
+    );
+    if (result) {
       dispatch({
-        type: CREATE_EVENT,
-        title,
-        body,
+        type: DELETE_ALL_EVENTS,
       });
-  
-      setTitle("");
-      setBody("");
-    };
-  
-    const deleteAllEvents =(e) => {
-      e.preventDefault();
-      const result = window.confirm('全てのイベントを本当に削除してもよろしいでしょうか？');
-      if (result) {
-        dispatch({
-          type: DELETE_ALL_EVENTS
-        })
-      }
+      dispatch({
+        type: DELETE_ALL_OPERATION_LOG,
+        description: '全てのイベントを削除しました。',
+        operatedAt: timeCurrentIso8601()
+      })
     }
-  
-    const unCreatable = title === '' || body === '';
-  
+  };
+
+  const unCreatable = title === "" || body === "";
 
   return (
     <>
@@ -76,4 +92,4 @@ const EventFrom = () => {
   );
 };
 
-export default EventFrom
+export default EventFrom;
